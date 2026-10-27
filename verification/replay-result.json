@@ -1,0 +1,9 @@
+{
+  "operation": "cache-only layout replay; no inference and no new AI reading",
+  "upstream_commit_required": "f16a641b9c7be155938d6b0e047b24e944dd4668",
+  "translation_exit": 0,
+  "pages_match": true,
+  "full_page_pixels_equal_at_2x": true,
+  "elapsed_seconds": 6.031,
+  "note": "PDF binary metadata may differ; compare rendered pages, not output file hashes."
+}

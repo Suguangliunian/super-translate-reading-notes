@@ -1,0 +1,17 @@
+{
+  "run_id": "B-with-pro",
+  "ended_at": "2026-10-27T08:39:23.360314+00:00",
+  "status": "completed",
+  "model_requested": "deepseek-v4-pro-0813",
+  "models_returned": [
+    "deepseek-v4-pro-ga-260813"
+  ],
+  "total_model_requests": 22,
+  "prompt_tokens": 729234,
+  "completion_tokens": 11078,
+  "duration_seconds": 192.688,
+  "errors": [],
+  "condition": "with_skill",
+  "cost": null,
+  "cost_note": "Gateway settlement must be checked separately; tokens are provider-reported."
+}

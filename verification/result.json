@@ -1,0 +1,147 @@
+{
+  "scope": "Local artifact and table-consistency checks for one saved Mistral page; not a new inference or benchmark run.",
+  "paper_original_page": 4,
+  "page_size_pt": [
+    0.0,
+    0.0,
+    612.0,
+    792.0
+  ],
+  "pages_match": true,
+  "regions": [
+    {
+      "region": "figure4",
+      "pdf_page_index": 0,
+      "rect_pt": [
+        106,
+        75,
+        506,
+        198
+      ],
+      "mean_absolute_rgb_difference_0_to_1": 0.0,
+      "changed_pixel_fraction": 0.0,
+      "exact_pixel_equal": true
+    },
+    {
+      "region": "table2",
+      "pdf_page_index": 0,
+      "rect_pt": [
+        106,
+        260,
+        506,
+        324
+      ],
+      "mean_absolute_rgb_difference_0_to_1": 0.0,
+      "changed_pixel_fraction": 0.0,
+      "exact_pixel_equal": true
+    },
+    {
+      "region": "table3",
+      "pdf_page_index": 0,
+      "rect_pt": [
+        313,
+        531,
+        503,
+        633
+      ],
+      "mean_absolute_rgb_difference_0_to_1": 0.0,
+      "changed_pixel_fraction": 0.0,
+      "exact_pixel_equal": true
+    }
+  ],
+  "table_extraction_matches_manually_checked_csv": true,
+  "table_values_match_translated_pdf": true,
+  "comparison": [
+    {
+      "metric": "MMLU",
+      "llama2_13b": 55.6,
+      "mistral_7b": 60.1,
+      "delta_pp": 4.5
+    },
+    {
+      "metric": "HellaSwag",
+      "llama2_13b": 80.7,
+      "mistral_7b": 81.3,
+      "delta_pp": 0.6
+    },
+    {
+      "metric": "WinoG",
+      "llama2_13b": 72.9,
+      "mistral_7b": 75.3,
+      "delta_pp": 2.4
+    },
+    {
+      "metric": "PIQA",
+      "llama2_13b": 80.8,
+      "mistral_7b": 83.0,
+      "delta_pp": 2.2
+    },
+    {
+      "metric": "Arc-e",
+      "llama2_13b": 75.2,
+      "mistral_7b": 80.0,
+      "delta_pp": 4.8
+    },
+    {
+      "metric": "Arc-c",
+      "llama2_13b": 48.8,
+      "mistral_7b": 55.5,
+      "delta_pp": 6.7
+    },
+    {
+      "metric": "NQ",
+      "llama2_13b": 29.0,
+      "mistral_7b": 28.8,
+      "delta_pp": -0.2
+    },
+    {
+      "metric": "TriviaQA",
+      "llama2_13b": 69.6,
+      "mistral_7b": 69.9,
+      "delta_pp": 0.3
+    },
+    {
+      "metric": "HumanEval",
+      "llama2_13b": 18.9,
+      "mistral_7b": 30.5,
+      "delta_pp": 11.6
+    },
+    {
+      "metric": "MBPP",
+      "llama2_13b": 35.4,
+      "mistral_7b": 47.5,
+      "delta_pp": 12.1
+    },
+    {
+      "metric": "MATH",
+      "llama2_13b": 6.0,
+      "mistral_7b": 13.1,
+      "delta_pp": 7.1
+    },
+    {
+      "metric": "GSM8K",
+      "llama2_13b": 34.3,
+      "mistral_7b": 52.2,
+      "delta_pp": 17.9
+    }
+  ],
+  "strictly_higher_metrics": 11,
+  "compared_metrics": 12,
+  "all_metrics_superior": false,
+  "counterexamples": [
+    {
+      "metric": "NQ",
+      "llama2_13b": 29.0,
+      "mistral_7b": 28.8,
+      "delta_pp": -0.2
+    }
+  ],
+  "ai_report_repeats_all_metrics_claim": true,
+  "ai_report_mentions_nq_29_0": false,
+  "interpretation": "Layout preservation passed for the three fixed crops. The Table 2 universal superiority claim is contradicted by NQ 28.8 < 29.0. These checks do not validate all translation semantics, statistical significance, or underlying benchmark experiments.",
+  "sha256": {
+    "paper/input.pdf": "e6b5a2e5401d2a430043e4294d43659e4b277612d90b1db7e4e71afe22066d3d",
+    "practice/out/translated.pdf": "b1619157bccd9ad6378cd4635ed60b3c77df7c03dc392ade440360fb61044847",
+    "practice/out/output.md": "b6ab34b7ea30e72dc0d222cd7d844f6b346a603cb0dcec89de21c256691ab1a0"
+  }
+}

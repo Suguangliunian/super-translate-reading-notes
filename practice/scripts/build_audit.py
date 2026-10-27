@@ -1,0 +1,92 @@
+
+import json, fitz
+
+# Build reading audit from source text + translations (from cache)
+cache = {}
+for l in open('out/translation-cache.jsonl'):
+    r = json.loads(l)
+    cache[r['source']] = r['translation']
+
+# Map: paragraph -> (bbox, en, zh)
+# I'll construct the audit manually with precise source text and bboxes from list_blocks output.
+
+audit = {
+  "document": "Mistral 7B (arXiv:2310.06825v1), original PDF page 4",
+  "source_page": 4,
+  "page_size": {"width": 612.0, "height": 792.0},
+  "note": "PDF is the layout authority; source.txt may contain extraction noise. Figure 4 (image) and Tables 2/3 (numeric cells) are preserved verbatim; only prose/captions/headings are translated.",
+  "paragraphs": []
+}
+
+def para(pid, bbox, en, zh, terms, notes):
+    audit["paragraphs"].append({
+        "id": pid, "bbox": bbox, "english": en, "chinese": zh,
+        "key_terms_symbols": terms, "notes": notes
+    })
+
+para("P1", [108,207,505,246],
+ "Figure 4: Performance of Mistral 7B and different Llama models on a wide range of benchmarks. All models were re-evaluated on all metrics with our evaluation pipeline for accurate comparison. Mistral 7B significantly outperforms Llama 2 7B and Llama 2 13B on all benchmarks. It is also vastly superior to Llama 1 34B in mathematics, code generation, and reasoning benchmarks.",
+ "图4：Mistral 7B 与不同 Llama 模型在广泛基准上的性能。所有模型均通过我们的评估流程在所有度量上重新评估，以确保准确比较。Mistral 7B 在所有基准上显著优于 Llama 2 7B 和 Llama 2 13B。在数学、代码生成和推理基准上，它也大幅超越 Llama 1 34B。",
+ ["Figure 4 caption", "benchmarks(基准)", "evaluation pipeline(评估流程)", "outperforms(优于)", "vastly superior(大幅超越)"],
+ "图4标题+说明。比较对象：Llama 2 7B、Llama 2 13B、Llama 1 34B。'所有基准'为作者主张，本页仅给出图4与表2的数值，未逐项列出图4内所有基准名称（图4为位图，其内部坐标轴标签未在文本层）。")
+
+para("P2", [108,328,504,347],
+ "Table 2: Comparison of Mistral 7B with Llama. Mistral 7B outperforms Llama 2 13B on all metrics, and approaches the code performance of Code-Llama 7B without sacrificing performance on non-code benchmarks.",
+ "表2：Mistral 7B 与 Llama 的比较。Mistral 7B 在所有度量上均优于 Llama 2 13B，并在不牺牲非代码基准性能的情况下接近 Code-Llama 7B 的代码性能。",
+ ["Table 2 caption", "metrics(度量)", "Code-Llama 7B", "non-code benchmarks(非代码基准)"],
+ "表2标题+说明。表2数值（MMLU/HellaSwag/WinoG/PIQA/Arc-e/Arc-c/NQ/TriviaQA/HumanEval/MBPP/MATH/GSM8K）全部保留原文数字。'接近 Code-Llama 7B 代码性能'对应 HumanEval 30.5 vs 31.1、MBPP 47.5 vs 52.5。")
+
+para("P3", [108,381,506,446],
+ "Size and Efficiency. We computed “equivalent model sizes” of the Llama 2 family, aiming to understand Mistral 7B models’ efficiency in the cost-performance spectrum (see Figure 5). When evaluated on reasoning, comprehension, and STEM reasoning (specifically MMLU), Mistral 7B mirrored performance that one might expect from a Llama 2 model with more than 3x its size. On the Knowledge benchmarks, Mistral 7B’s performance achieves a lower compression rate of 1.9x, which is likely due to its limited parameter count that restricts the amount of knowledge it can store.",
+ "规模与效率。我们计算了 Llama 2 系列的“等效模型规模”，旨在理解 Mistral 7B 模型在成本-性能谱系中的效率（见图5）。在推理、理解以及 STEM 推理（特别是 MMLU）评估中，Mistral 7B 的表现与规模超过其三倍的 Llama 2 模型相当。在知识基准上，Mistral 7B 的性能实现了较低的压缩率，为 1.9 倍，这可能是由于其有限的参数数量限制了可存储的知识量。",
+ ["equivalent model sizes(等效模型规模)", "cost-performance spectrum(成本-性能谱系)", "3x(三倍)", "compression rate 1.9x(压缩率1.9倍)", "MMLU", "Figure 5(图5)"],
+ "关键数值：>3x（推理/理解/STEM推理的等效规模）、1.9x（知识基准压缩率）。'图5'在本页之外（本页仅含图4），无法在本页核对图5内容。'可能由于'为作者推测，非本页验证事实。")
+
+para("P4", [108,452,505,484],
+ "Evaluation Differences. On some benchmarks, there are some differences between our evaluation protocol and the one reported in the Llama 2 paper: 1) on MBPP, we use the hand-verified subset 2) on TriviaQA, we do not provide Wikipedia contexts.",
+ "评估差异。在某些基准上，我们的评估协议与 Llama 2 论文中报告的存在一些差异：1）在 MBPP 上，我们使用人工验证的子集；2）在 TriviaQA 上，我们不提供维基百科上下文。",
+ ["evaluation protocol(评估协议)", "MBPP hand-verified subset(人工验证子集)", "TriviaQA Wikipedia contexts(维基百科上下文)"],
+ "评估协议差异说明，两条差异均保留。这是作者对自身评估方法的声明，本页未给出 Llama 2 论文原文以逐项核对。")
+
+para("P5", [108,505,242,517],
+ "4 Instruction Finetuning",
+ "4 指令微调",
+ ["section heading 4(第4节)", "Instruction Finetuning(指令微调)"],
+ "第4节标题。")
+
+para("P6", [314,638,505,667],
+ "Table 3: Comparison of Chat models. Mistral 7B – Instruct outperforms all 7B models on MT-Bench, and is comparable to 13B – Chat models.",
+ "表3：对话模型比较。Mistral 7B – Instruct 在 MT-Bench 上优于所有 7B 模型，并与 13B – Chat 模型相当。",
+ ["Table 3 caption", "MT-Bench", "Chatbot Arena ELO Rating", "7B/13B Chat models"],
+ "表3标题+说明。表3数值（Chatbot Arena ELO、MT-Bench 分数）全部保留。'优于所有7B模型'对应 MT-Bench 6.84 vs 6.27/6.17；'与13B相当'对应 6.84 vs 6.65/6.57。")
+
+para("P7", [108,532,306,674],
+ "To evaluate the generalization capabilities of Mistral 7B, we fine-tuned it on instruction datasets publicly available on the Hugging Face repository. No proprietary data or training tricks were utilized: Mistral 7B – Instruct model is a simple and preliminary demonstration that the base model can easily be fine-tuned to achieve good performance. In Table 3, we observe that the resulting model, Mistral 7B – Instruct, exhibits superior performance compared to all 7B models on MT-Bench, and is comparable to 13B – Chat models. An independent human evaluation was conducted on https://llmboxing.com/leaderboard.",
+ "为评估 Mistral 7B 的泛化能力，我们在 Hugging Face 仓库公开可用的指令数据集上对其进行了微调。未使用任何专有数据或训练技巧：Mistral 7B – Instruct 模型是一个简单且初步的展示，表明基础模型可以轻松微调以获得良好性能。在表3中，我们观察到所得模型 Mistral 7B – Instruct 在 MT-Bench 上表现出优于所有 7B 模型的性能，并与 13B – Chat 模型相当。独立的人工评估在 https://llmboxing.com/leaderboard 上进行。",
+ ["generalization(泛化)", "fine-tuned(微调)", "Hugging Face", "proprietary data(专有数据)", "training tricks(训练技巧)", "MT-Bench", "llmboxing.com/leaderboard"],
+ "左栏正文。URL 保留原文。'未使用专有数据或训练技巧'为作者声明。")
+
+para("P8", [108,680,504,722],
+ "In this evaluation, participants were provided with a set of questions along with anonymous responses from two models and were asked to select their preferred response, as illustrated in Figure 6. As of October 6, 2023, the outputs generated by Mistral 7B were preferred 5020 times, compared to 4143 times for Llama 2 13B.",
+ "在此评估中，参与者获得一组问题以及来自两个模型的匿名回答，并被要求选择他们偏好的回答，如图6所示。截至2023年10月6日，Mistral 7B 生成的输出被偏好 5020 次，而 Llama 2 13B 为 4143 次。",
+ ["anonymous responses(匿名回答)", "preferred(被偏好)", "5020 vs 4143", "October 6, 2023(2023年10月6日)", "Figure 6(图6)"],
+ "关键数值：Mistral 7B 被偏好 5020 次 vs Llama 2 13B 4143 次（截至2023-10-06）。'图6'在本页之外，无法在本页核对。")
+
+# Tables and figure preservation record
+audit["preserved_elements"] = [
+  {"element": "Figure 4 (image)", "bbox": [110,72,502,200], "status": "preserved verbatim (bitmap image, 10973x3570 px)", "note": "图内英文标签/坐标轴保留，未翻译（位图无文本层）"},
+  {"element": "Table 2 (performance table)", "bbox": [108,266,500,321], "status": "preserved verbatim", "note": "12个指标列、4个模型行，所有百分比数字保留"},
+  {"element": "Table 3 (chat models)", "bbox": [315,537,501,630], "status": "preserved verbatim", "note": "Chatbot Arena ELO / MT-Bench 数值保留"},
+  {"element": "Page number '4'", "bbox": [304,742,308,752], "status": "preserved", "note": "页脚页码"},
+]
+
+audit["gaps"] = [
+  "图4为位图，其内部坐标轴/图例标签不在文本层，无法逐项翻译或核对图内具体基准名称与数值；仅能依据图4标题与表2数值解释。",
+  "图5（等效模型规模）与图6（人工评估界面）在本页之外，正文引用它们但本页无法核对其内容。",
+  "表2/表3的指标定义（如 MMLU、HellaSwag、WinoGrande、PIQA、Arc-e/Arc-c、NQ、TriviaQA、HumanEval、MBPP、MATH、GSM8K、MT-Bench、Chatbot Arena ELO）本页未给出定义，仅能按通用含义解释，不能从本页推断其具体评测细节。",
+  "'所有基准上显著优于'、'未使用专有数据或训练技巧'、'可能由于参数数量限制'等均为作者主张/推测，本页未提供独立验证。",
+  "source.txt 与 PDF 文本层一致（无抽取噪声差异），但 source.txt 将表格数字按行平铺，列对齐需以 PDF 为准。",
+]
+
+json.dump(audit, open('out/reading-audit.json','w'), ensure_ascii=False, indent=2)
+print("wrote reading-audit.json with", len(audit['paragraphs']), "paragraphs")

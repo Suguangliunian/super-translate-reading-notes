@@ -1,0 +1,9 @@
+{
+  "operation": "First cache-only replay during article preparation",
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "Translation failed: cache-only mode: 2/8 blocks missing or invalid. Unavailable blocks dumped to <work>/rerun/translation-cache.jsonl.missing.jsonl",
+  "redaction": "Only the local absolute workspace path was normalized to <work>.",
+  "missing_parameter": "--cache-segments",
+  "original_evidence_changed": false
+}

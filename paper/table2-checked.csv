@@ -1,0 +1,13 @@
+metric,llama2_13b,mistral_7b
+MMLU,55.6,60.1
+HellaSwag,80.7,81.3
+WinoG,72.9,75.3
+PIQA,80.8,83.0
+Arc-e,75.2,80.0
+Arc-c,48.8,55.5
+NQ,29.0,28.8
+TriviaQA,69.6,69.9
+HumanEval,18.9,30.5
+MBPP,35.4,47.5
+MATH,6.0,13.1
+GSM8K,34.3,52.2
